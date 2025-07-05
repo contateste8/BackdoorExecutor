@@ -124,7 +124,6 @@ MinimizeButton.MouseButton1Click:Connect(function()
 		Divider.Visible = false
 
 		TweenService:Create(MainFrame, tweenInfo, {Size = minimizedSize}):Play()
-		TweenService:Create(Title, tweenInfo, {Position = minimizedTitlePos}):Play()
 
 		MinimizeButton.Text = "+"
 		FireButtonClickSound()
@@ -136,7 +135,6 @@ MinimizeButton.MouseButton1Click:Connect(function()
 		end
 
 		TweenService:Create(MainFrame, tweenInfo, {Size = originalSize}):Play()
-		TweenService:Create(Title, tweenInfo, {Position = originalTitlePos}):Play()
 
 		MinimizeButton.Text = "—"
 		FireButtonClickSound()
