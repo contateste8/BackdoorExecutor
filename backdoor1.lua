@@ -21,7 +21,7 @@ ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 local MainFrame = Instance.new("Frame", ScreenGui)
 MainFrame.Size = UDim2.new(0, 550, 0, 300)
-MainFrame.Position = UDim2.new(0.5, 0, 0.5, -175)
+MainFrame.Position = UDim2.new(0.5, 0, 0.5, -170)
 MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 MainFrame.BorderSizePixel = 0
 MainFrame.AnchorPoint = Vector2.new(0.5, 0)
