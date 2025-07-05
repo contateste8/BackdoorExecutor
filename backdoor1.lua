@@ -16,7 +16,7 @@ sound:Play()
 end
 
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
-ScreenGui.Name = "ModernExecutor"
+ScreenGui.Name = "BackdoorExecutor"
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 local MainFrame = Instance.new("Frame", ScreenGui)
