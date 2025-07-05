@@ -421,6 +421,12 @@ _G.AddButton("Sensation Hub", 'require(100263845596551)("'..LocalPlayer.Name..'"
 
 _G.AddButton("R6 Convert", 'require(3436957371):r6("' .. LocalPlayer.Name .. '")')
 
+_G.AddButton("Respawn Character", [[
+game.Players.PlayerAdded:Connect(function(player)
+	player:LoadCharacter()
+end)
+]])
+
 _G.AddButton("Grab Knife V4 (R6 Only)", 'require(18665717275).load("' .. LocalPlayer.Name .. '")')
 
 _G.AddButton("C4 Bomb", 'require(0x1767bf813)("' .. LocalPlayer.Name .. '")')
