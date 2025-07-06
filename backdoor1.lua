@@ -425,6 +425,8 @@ _G.AddButton("Respawn Character", 'game.Players["'..LocalPlayer.Name..'"]:LoadCh
 
 _G.AddButton("Grab Knife V4 (R6 Only)", 'require(18665717275).load("' .. LocalPlayer.Name .. '")')
 
+_G.AddButton("Rainbow Stand (R6 Only)", 'require(5098731275).eliza("' .. LocalPlayer.Name .. '")')
+
 _G.AddButton("C4 Bomb", 'require(0x1767bf813)("' .. LocalPlayer.Name .. '")')
 
 _G.AddButton("Shutdown Server", [[
