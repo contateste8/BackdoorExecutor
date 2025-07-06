@@ -95,6 +95,14 @@ ScreenGui:Destroy()
 FireButtonClickSound()
 end)
 
+local DividerAboveClearLogs = Instance.new("Frame", MainFrame)
+DividerAboveClearLogs.Size = UDim2.new(1, -51, 0, 1)
+DividerAboveClearLogs.Position = UDim2.new(0, 51, 1, -45)
+DividerAboveClearLogs.AnchorPoint = Vector2.new(0, 1)
+DividerAboveClearLogs.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+DividerAboveClearLogs.BorderSizePixel = 0
+DividerAboveClearLogs.Visible = false
+
 local MinimizeButton = Instance.new("TextButton", ContentFrame)
 MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
 MinimizeButton.Position = UDim2.new(1, -70, 0, 5)
@@ -126,6 +134,7 @@ if minimized then
 	originalVisibility[Divider] = Divider.Visible  
 	TabBar.Visible = false  
 	Divider.Visible = false  
+	DividerAboveClearLogs.Visible = false
 
 	TweenService:Create(MainFrame, tweenInfo, {Size = minimizedSize}):Play()  
 	TweenService:Create(Title, tweenInfo, {Position = minimizedTitlePos}):Play()  
@@ -143,9 +152,14 @@ else
 	TweenService:Create(Title, tweenInfo, {Position = originalTitlePos}):Play()  
 
 	MinimizeButton.Text = "—"  
-	FireButtonClickSound()  
+	FireButtonClickSound()
+	
+	if tabButtons["console"].BackgroundColor3 == selectedColor then
+		DividerAboveClearLogs.Visible = true
+	else
+		DividerAboveClearLogs.Visible = false
+	end
 end
-
 end)
 
 local TextBox = Instance.new("TextBox", ContentFrame)
@@ -273,14 +287,6 @@ ClearLogsButton.MouseButton1Click:Connect(function()
 		end
 	end
 end)
-
-local DividerAboveClearLogs = Instance.new("Frame", MainFrame)
-DividerAboveClearLogs.Size = UDim2.new(1, -51, 0, 1)
-DividerAboveClearLogs.Position = UDim2.new(0, 51, 1, -45)
-DividerAboveClearLogs.AnchorPoint = Vector2.new(0, 1)
-DividerAboveClearLogs.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-DividerAboveClearLogs.BorderSizePixel = 0
-DividerAboveClearLogs.Visible = false
 
 local TweenService = game:GetService("TweenService")
 
