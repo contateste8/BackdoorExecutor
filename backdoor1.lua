@@ -5,6 +5,10 @@ local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
 local player = Players.LocalPlayer
 
+local selectedColor = Color3.fromRGB(60, 60, 60)
+local unselectedColor = Color3.fromRGB(30, 30, 30)
+local tabButtons = {}
+
 local function FireButtonClickSound()
 local sound = Instance.new("Sound")
 
@@ -21,7 +25,7 @@ ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 local MainFrame = Instance.new("Frame", ScreenGui)
 MainFrame.Size = UDim2.new(0, 550, 0, 300)
-MainFrame.Position = UDim2.new(0.5, 0, 0.5, -170)
+MainFrame.Position = UDim2.new(0.5, 0, 0.5, -175)
 MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 MainFrame.BorderSizePixel = 0
 MainFrame.AnchorPoint = Vector2.new(0.5, 0)
@@ -219,8 +223,6 @@ label.BackgroundTransparency = 1
 label.Size = UDim2.new(1, -10, 0, 20)
 end
 
-local TweenService = game:GetService("TweenService")
-
 local buttonCache = {}
 
 local function animateClick(button)
@@ -246,9 +248,41 @@ local releaseTween = TweenService:Create(button, TweenInfo.new(0.08, Enum.Easing
 pressTween:Play()    
 pressTween.Completed:Connect(function()    
 	releaseTween:Play()    
+  end)
+end
+
+local ClearLogsButton = Instance.new("TextButton", ContentFrame)
+ClearLogsButton.Size = UDim2.new(0, 100, 0, 30)
+ClearLogsButton.Position = UDim2.new(0, 5, 1, -10)
+ClearLogsButton.AnchorPoint = Vector2.new(0, 1)
+ClearLogsButton.Text = "Clear Logs"
+ClearLogsButton.Font = Enum.Font.GothamMedium
+ClearLogsButton.TextSize = 14
+ClearLogsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ClearLogsButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+ClearLogsButton.Visible = false
+Instance.new("UICorner", ClearLogsButton).CornerRadius = UDim.new(0, 6)
+
+ClearLogsButton.MouseButton1Click:Connect(function()
+    animateClick(ClearLogsButton)
+	FireButtonClickSound()
+
+	for _, obj in pairs(ConsolePanel:GetChildren()) do
+		if obj:IsA("TextLabel") then
+			obj:Destroy()
+		end
+	end
 end)
 
-end
+local DividerAboveClearLogs = Instance.new("Frame", MainFrame)
+DividerAboveClearLogs.Size = UDim2.new(1, -51, 0, 1)
+DividerAboveClearLogs.Position = UDim2.new(0, 51, 1, -45)
+DividerAboveClearLogs.AnchorPoint = Vector2.new(0, 1)
+DividerAboveClearLogs.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+DividerAboveClearLogs.BorderSizePixel = 0
+DividerAboveClearLogs.Visible = false
+
+local TweenService = game:GetService("TweenService")
 
 ExecuteButton.MouseButton1Click:Connect(function()
 FireButtonClickSound()
@@ -257,6 +291,7 @@ logToConsole("SUCCESS", "Script Executed", Color3.fromRGB(100, 255, 100))
 local code = TextBox.Text
 if code == "" then
 notify("Error", "No code provided")
+logToConsole("ERROR", "No code provided", Color3.fromRGB(255, 0, 0))
 return
 end
 local enviados = 0
@@ -301,26 +336,33 @@ ScriptLayout.SortOrder = Enum.SortOrder.LayoutOrder
 ScriptLayout.Padding = UDim.new(0, 5)
 
 local function SetActiveTab(tab)
-TextBox.Visible = false
-ExecuteButton.Visible = false
-ClearButton.Visible = false
-ScriptPanel.Visible = false
-ConsolePanel.Visible = false
+	TextBox.Visible = false
+	ExecuteButton.Visible = false
+	ClearButton.Visible = false
+	ScriptPanel.Visible = false
+	ConsolePanel.Visible = false
 
-if tab == "executor" then  
-	TextBox.Visible = true  
-	ExecuteButton.Visible = true  
-	FireButtonClickSound()  
-	ClearButton.Visible = true  
-	FireButtonClickSound()  
-elseif tab == "scripts" then  
-	ScriptPanel.Visible = true  
-	FireButtonClickSound()  
-elseif tab == "console" then  
-	ConsolePanel.Visible = true  
-	FireButtonClickSound()  
-end
-
+	for name, button in pairs(tabButtons) do
+		if button then
+			button.BackgroundColor3 = (name == tab) and selectedColor or unselectedColor
+		end
+	end
+	
+	if tab == "executor" then  
+		TextBox.Visible = true  
+		ExecuteButton.Visible = true  
+		ClearButton.Visible = true  
+		FireButtonClickSound()
+	elseif tab == "scripts" then  
+		ScriptPanel.Visible = true  
+		FireButtonClickSound()
+	elseif tab == "console" then
+	ConsolePanel.Visible = true
+	ClearLogsButton.Visible = true
+	FireButtonClickSound()
+	end
+	ClearLogsButton.Visible = (tab == "console")
+	DividerAboveClearLogs.Visible = (tab == "console")
 end
 
 local TweenService = game:GetService("TweenService")
@@ -400,18 +442,29 @@ end)
 
 end
 
-local function createTabButton(order, callback, imageId)
-local tab = Instance.new("ImageButton", TabBar)
-tab.Size = UDim2.new(1, 0, 0, 50)
-tab.Position = UDim2.new(0, 0, 0, order * 50)
-tab.Image = "rbxassetid://"..imageId
-tab.BackgroundTransparency = 1
-tab.MouseButton1Click:Connect(callback)
+local function createTabButton(order, tabName, callback, imageId)
+	local tab = Instance.new("ImageButton", TabBar)
+	tab.Size = UDim2.new(1, 0, 0, 50)
+	tab.Position = UDim2.new(0, 0, 0, order * 50)
+	tab.Image = "rbxassetid://" .. imageId
+	tab.BackgroundColor3 = unselectedColor
+	tab.AutoButtonColor = false
+	tab.Name = tabName
+
+    local corner = Instance.new("UICorner", tab)
+    corner.CornerRadius = UDim.new(0, 8)
+
+	tab.MouseButton1Click:Connect(function()
+		SetActiveTab(tabName)
+		callback()
+	end)
+
+	tabButtons[tabName] = tab
 end
 
-createTabButton(0, function() SetActiveTab("executor") end, 133432695793267)
-createTabButton(1, function() SetActiveTab("scripts") end, 91156715735899)
-createTabButton(2, function() SetActiveTab("console") end, 72275937634892)
+createTabButton(0, "executor", function() end, 133432695793267)
+createTabButton(1, "scripts", function() end, 91156715735899)
+createTabButton(2, "console", function() end, 72275937634892)
 
 SetActiveTab("executor")
 
@@ -421,11 +474,10 @@ _G.AddButton("Sensation Hub", 'require(100263845596551)("'..LocalPlayer.Name..'"
 
 _G.AddButton("R6 Convert", 'require(3436957371):r6("' .. LocalPlayer.Name .. '")')
 
-_G.AddButton("Respawn Character", 'game.Players["'..LocalPlayer.Name..'"]:LoadCharacter()')
-
 _G.AddButton("Grab Knife V4 (R6 Only)", 'require(18665717275).load("' .. LocalPlayer.Name .. '")')
 
 _G.AddButton("Rainbow Stand (R6 Only)", 'require(5098731275).eliza("' .. LocalPlayer.Name .. '")')
+
 
 _G.AddButton("C4 Bomb", 'require(0x1767bf813)("' .. LocalPlayer.Name .. '")')
 
