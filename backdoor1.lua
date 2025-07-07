@@ -1534,7 +1534,7 @@ local function ScanBackdoor()
 
     logToConsole("SCANNING", "Scanning for backdoors...", Color3.fromRGB(255, 255, 0))
 
-    task.delay(2, function()
+    task.delay(3, function()
         local found = false
         for _, obj in ipairs(workspace:GetChildren()) do
             if obj.ClassName == "Hint" and obj.Text == codigoAleatorio then
