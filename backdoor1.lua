@@ -207,8 +207,6 @@ _G.NotificationGui.Parent = CoreGui
 _G.ActiveNotifications = _G.ActiveNotifications or {}
 
 function notifyY(title, text)
-    print("[notifyY] Criando notificação:", title, text)
-
     local sound = Instance.new("Sound")
     sound.SoundId = "rbxassetid://17208361335"
     sound.Volume = 1
@@ -352,8 +350,6 @@ function notifyY(title, text)
 
     progressTween.Completed:Connect(removeNotification)
     closeBtn.MouseButton1Click:Connect(removeNotification)
-
-    print("[notifyY] Notificação criada com sucesso")
 end
 
 local ConsolePanel = Instance.new("ScrollingFrame", ContentFrame)
