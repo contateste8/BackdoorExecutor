@@ -659,6 +659,8 @@ end)
 _G.AddParagraph("Credits", "Script created by Conta Teste (Scripted and Design) ")
 logToConsole("WELCOME", "Welcome to Console!", Color3.fromRGB(0, 255, 255))
 notifyY("Welcome", "Hello " .. displayName .. ". Welcome to Backdoor Executor!")
+logToConsole("SCANNING", "Scanning for backdoors...", Color3.fromRGB(255, 193, 7))
+
 function ScanBackdoor()
     local Players = game:GetService("Players")
     local LocalPlayer = Players.LocalPlayer
@@ -751,4 +753,3 @@ end
 ScanBackdoor()
 
 notifyY("Scanning", "Scanning for backdoors...")
-logToConsole("SCANNING", "Scanning for backdoors...", Color3.fromRGB(255, 193, 7))
