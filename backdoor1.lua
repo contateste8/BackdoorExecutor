@@ -446,8 +446,7 @@ for _, localBase in ipairs(lugares) do
     end
 end
 if enviados > 0 then
-    logToConsole("SUCCESS", "Script Executed", Color3.fromRGB(100, 255, 100))
-    notifyY("Success", "Successfully executed")
+    logToConsole("SUCCESS", "Script Executed", Color3.fromRGB(100, 255, 100)
 end
 end)
 ClearButton.MouseButton1Click:Connect(function()
