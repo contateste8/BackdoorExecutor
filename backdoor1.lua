@@ -302,7 +302,7 @@ TextBox.Position = UDim2.new(0.05, 0, 0.2, 0)
 
 TextBox.Size = UDim2.new(0.9, 0, 0.5, 0)
 
-TextBox.PlaceholderText = 'Enter a Code Here!'
+TextBox.PlaceholderText = 'Input Code Here! Example:\nrequire(c00lkid)\nno it's not from forsaken stupid 😡'
 
 TextBox.Text = ""
 
@@ -1256,3 +1256,4 @@ _G.AddParagraph("Credits", "Script created by Conta Teste (Scripted and Design) 
 logToConsole("WELCOME", "Welcome to Console!", Color3.fromRGB(0, 255, 255))
 
 notifyY("Welcome", "Hello " .. displayName .. ". Welcome to Backdoor Executor!")
+
