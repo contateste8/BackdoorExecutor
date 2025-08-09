@@ -1275,6 +1275,4 @@ for _, obj in ipairs(ScreenGui:GetDescendants()) do
     if obj:IsA("ScrollingFrame") then
         obj.ScrollBarThickness = 0
     end
-
 end
-
