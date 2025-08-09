@@ -1116,6 +1116,107 @@ _G.AddButton("R6 Convert", 'require(3436957371):r6("' .. LocalPlayer.Name .. '")
 
 _G.AddButton("Respawn Character", 'game.Players["' .. LocalPlayer.Name .. '"]:LoadCharacter()')
 
+_G.AddButton(
+"Dummy Spawn", 
+[[
+-- ============================
+-- Dummy - Made by Conta Teste
+-- ============================
+
+-- Dummy Configurations:
+local h = 100 -- Max Health | Example: 100
+local i = 100 -- Current Health | Example: 50
+
+-- Dummy Code:
+local Players = game:GetService("Players")
+local player = Players:GetPlayers()[1]
+function a(g)
+local dummy = Instance.new("Model")
+dummy.Name = "Dummy"
+function d(c, e, f)
+local p = Instance.new("Part")
+p.Name = c
+p.Size = e
+p.BrickColor = BrickColor.new(f)
+p.Anchored = false
+p.CanCollide = true
+p.TopSurface = Enum.SurfaceType.Smooth
+p.BottomSurface = Enum.SurfaceType.Smooth
+p.Parent = dummy
+return p
+end
+local Head = d("Head", Vector3.new(2, 1, 1), "Medium stone grey")
+local Torso = d("Torso", Vector3.new(2, 2, 1), "Medium stone grey")
+local LeftArm = d("Left Arm", Vector3.new(1, 2, 1), "Medium stone grey")
+local RightArm = d("Right Arm", Vector3.new(1, 2, 1), "Medium stone grey")
+local LeftLeg = d("Left Leg", Vector3.new(1, 2, 1), "Medium stone grey")
+local RightLeg = d("Right Leg", Vector3.new(1, 2, 1), "Medium stone grey")
+local headMesh = Instance.new("SpecialMesh")
+headMesh.MeshType = Enum.MeshType.Head
+headMesh.Scale = Vector3.new(1.25, 1.25, 1.25)
+headMesh.Parent = Head
+local face = Instance.new("Decal")
+face.Texture = "rbxasset://textures/face.png"
+face.Face = Enum.NormalId.Front
+face.Parent = Head
+Torso.Position = g
+Head.Position = g + Vector3.new(0, 1.5, 0)
+LeftArm.Position = g + Vector3.new(-1.5, 0.5, 0)
+RightArm.Position = g + Vector3.new(1.5, 0.5, 0)
+LeftLeg.Position = g + Vector3.new(-0.5, -1.5, 0)
+RightLeg.Position = g + Vector3.new(0.5, -1.5, 0)
+local humanoid = Instance.new("Humanoid")
+humanoid.Name = "Humanoid"
+humanoid.RigType = Enum.HumanoidRigType.R6
+humanoid.MaxHealth = h
+humanoid.Health = i
+humanoid.Parent = dummy
+function b(c, part0, part1, c0, c1)
+local motor = Instance.new("Motor6D")
+motor.Name = c
+motor.Part0 = part0
+motor.Part1 = part1
+motor.C0 = c0
+motor.C1 = c1
+motor.Parent = part0
+end
+b("Neck", Torso, Head, CFrame.new(0, 1, 0), CFrame.new(0, -0.5, 0))
+b("Left Shoulder", Torso, LeftArm, CFrame.new(-1, 0.5, 0), CFrame.new(0.5, 0.5, 0))
+b("Right Shoulder", Torso, RightArm, CFrame.new(1, 0.5, 0), CFrame.new(-0.5, 0.5, 0))
+b("Left Hip", Torso, LeftLeg, CFrame.new(-0.5, -1, 0), CFrame.new(0, 1, 0))
+b("Right Hip", Torso, RightLeg, CFrame.new(0.5, -1, 0), CFrame.new(0, 1, 0))
+dummy.PrimaryPart = Torso
+dummy.Parent = workspace
+end
+if not player then return end
+local char = player.Character
+if not char then return end
+local hrp = char:FindFirstChild("HumanoidRootPart")
+if not hrp then return end
+local pos = hrp.Position + Vector3.new(3, 0, 0)
+a(pos)
+]]
+)
+
+_G.AddButton("Grab Knife V4 (R6 Only)", 'require(18665717275).load("' .. LocalPlayer.Name .. '")')
+
+_G.AddButton("Rainbow Stand (R6 Only)", 'require(5098731275).eliza("' .. LocalPlayer.Name .. '")')
+
+_G.AddButton("C4 Bomb", 'require(0x1767bf813)("' .. LocalPlayer.Name .. '")')
+
+_G.AddButton(
+    "Shutdown Server",
+    [[
+
+for _, v in pairs(game.Players:GetPlayers()) do
+
+v:Kick("Server has Shutdown")
+
+end
+
+]]
+)
+
 _G.AddButton("Grab Knife V4 (R6 Only)", 'require(18665717275).load("' .. LocalPlayer.Name .. '")')
 
 _G.AddButton("Rainbow Stand (R6 Only)", 'require(5098731275).eliza("' .. LocalPlayer.Name .. '")')
@@ -1174,4 +1275,5 @@ for _, obj in ipairs(ScreenGui:GetDescendants()) do
     if obj:IsA("ScrollingFrame") then
         obj.ScrollBarThickness = 0
     end
+
 end
