@@ -2221,7 +2221,7 @@ _G.AddButton(
 
 _G.AddButton(
     "Happy Hub SS",
-    'require(74349243416068):Hload("' .. LocalPlayer.Name .. '")'
+    'require(78790302691160):Hload("' .. LocalPlayer.Name .. '")'
 )
 
 _G.AddButton("R6 Convert", 'require(3436957371):r6("' .. LocalPlayer.Name .. '")')
@@ -2553,3 +2553,4 @@ for _, obj in ipairs(ScreenGui:GetDescendants()) do
 
 
 end
+
